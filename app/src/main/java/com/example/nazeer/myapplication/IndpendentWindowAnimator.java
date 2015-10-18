@@ -19,10 +19,7 @@ import android.widget.ImageView;
 public class IndpendentWindowAnimator {
     Activity context;
     WindowManager windowManager;
-
-
     int statusBarHeight;
-    WindowManager.LayoutParams layoutParams;
 
     public IndpendentWindowAnimator(Activity activity) {
         this.context = activity;
