@@ -24,18 +24,16 @@ public class MainActivity extends Activity {
         topLeft=(ImageView)findViewById(R.id.imageViewtopleft);
         bottomRight=(ImageView)findViewById(R.id.imageViewbottmRight);
         final IndpendentWindowAnimator indpendentWindowAnimator=new IndpendentWindowAnimator(this);
-        final ImageView transientIv=new ImageView(this);
-        WindowManager.LayoutParams params=new WindowManager.LayoutParams(100,100, WindowManager.LayoutParams.TYPE_APPLICATION,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
-        transientIv.setImageResource(R.color.colorAccent);
-        transientIv.setLayoutParams(params);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                indpendentWindowAnimator.startImageViewAnimation(topLeft,bottomRight,transientIv);
 
+        Button startButton= (Button) findViewById(R.id.buttonStartAnimation);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ImageView transientIv=new ImageView(MainActivity.this);
+                transientIv.setImageResource(android.R.color.black);
+                indpendentWindowAnimator.startImageViewAnimation(topLeft,bottomRight,transientIv);
             }
-        },300);
+        });
 
     }
 
