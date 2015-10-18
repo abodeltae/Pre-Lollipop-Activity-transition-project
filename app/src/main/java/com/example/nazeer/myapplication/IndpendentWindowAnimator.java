@@ -16,6 +16,12 @@ import android.widget.ImageView;
 /**
  * Created by nazeer on 10/17/15.
  */
+/*
+startImageViewAnimation( ) method create a view on top of the screen that will animate the position and size
+ from the given from a given "start Image view"  to a given "target Image view "
+  the animation doesnt depend on the activity nor the fragment so it can be started while changing activities or fragments to give the
+  lollipop transition feeling
+  */
 public class IndpendentWindowAnimator {
     Activity context;
     WindowManager windowManager;

@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 final ImageView transientIv=new ImageView(MainActivity.this);
                 transientIv.setImageResource(android.R.color.black);
-                indpendentWindowAnimator.startImageViewAnimation(topLeft,bottomRight,transientIv);
+                indpendentWindowAnimator.startImageViewAnimation(topLeft,bottomRight,transientIv,5000);
             }
         });
 
