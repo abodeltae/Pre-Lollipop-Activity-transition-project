@@ -24,14 +24,9 @@ public class IndpendentWindowAnimator {
     public IndpendentWindowAnimator(Activity activity) {
         this.context = activity;
         windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-
-
         Rect statusBarrectangle = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(statusBarrectangle);
-        ;
         statusBarHeight = statusBarrectangle.top;
-        Display display = windowManager.getDefaultDisplay();
-
 
     }
 
@@ -78,6 +73,7 @@ public class IndpendentWindowAnimator {
                 //The step thingy to skip a problem with the window manager not behaving properly when changing the position
                 // and size of view at the same time , so I change one property every time
                 // (mostly it will go unnoticed unless a realy slow animation )
+                // There's an open issue with this problem on this link https://code.google.com/p/android/issues/detail?id=74099
                 if (step++ % 2 == 0) {
                     //modify position
                     int addedX = (int) (fraction * xDifference);
@@ -92,7 +88,7 @@ public class IndpendentWindowAnimator {
                     transientParams.height = startHeight + addedHeight;
                     transientParams.width = startWidth + addedWidth;
                 }
-                System.out.println(transientParams.height + " " + transientParams.width);
+
                 windowManager.updateViewLayout(transientIv, transientParams);
                 if (fraction == 1) windowManager.removeView(transientIv);
             }
