@@ -30,9 +30,9 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
 
         //this layout will be used to contain a dummy hidden view to get the target views needed to be passed to the animator
         containerLayout= (RelativeLayout) findViewById(R.id.containerLayout);
-        //the layout of the target activity
+        //the layout of the target activity so I can get the target view from it
          targetLayout= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_example_transition2, null);
-        //keep it hidden as its not needed
+        //keep it hidden as its not needed fir the user
         // *** DONT SET IT TO GONE ***
         targetLayout.setVisibility(View.INVISIBLE);
 

@@ -18,9 +18,12 @@ import android.view.WindowManager;
  */
 /*
 starViewAnimation( ) method create a view on top of the screen that will animate the position and size
- from the given from a given "start Image view"  to a given "target Image view "
+ from the given from a given "start view"  to a given "target  view "
   the animation doesnt depend on the activity nor the fragment so it can be started while changing activities or fragments to give the
   lollipop transition feeling
+
+  *** the user should provide an animationView That will be used during the animation
+  *   He can then set a photo to it , add text etc ...
 
   **** its the user  responsibilty to provide a dummy target view to help determine the view location on the screen
   **** this can be done by viewing the target activity as invisible and sending the views from it see ExampleActivityTransition (Not the most effiecient but it works )
