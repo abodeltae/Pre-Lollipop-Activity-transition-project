@@ -71,7 +71,6 @@ public class IndpendentWindowAnimator {
             @Override
             public void onAnimationCancel(Animator animation) {
                 if(mAnimationListner!=null){
-                    valueAnimator.cancel();
                     windowManager.removeView(transientView);
                     mAnimationListner.onCacneled();
                 }
@@ -155,7 +154,7 @@ public class IndpendentWindowAnimator {
         ViewGroup.LayoutParams fromParams = fromIv.getLayoutParams();
         WindowManager.LayoutParams transientParams = new WindowManager.LayoutParams(fromParams.width,
                 fromParams.height,
-                WindowManager.LayoutParams.TYPE_APPLICATION,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
         transientParams.gravity = Gravity.TOP | Gravity.LEFT;
