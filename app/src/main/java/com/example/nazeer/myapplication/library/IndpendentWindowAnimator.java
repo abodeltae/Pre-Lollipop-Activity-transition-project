@@ -28,6 +28,7 @@ starViewAnimation( ) method create a view on top of the screen that will animate
   **** its the user  responsibilty to provide a dummy target view to help determine the view location on the screen
   **** this can be done by viewing the target activity as invisible and sending the views from it see ExampleActivityTransition (Not the most effiecient but it works )
   **** Call backs are provided to the user to let him determine when to hide and show the views to give the illusion of the moving View
+  ****  Becarfule with slow Animation The will continue even if you changed activities
   */
 public class IndpendentWindowAnimator {
     Activity activity;
@@ -77,7 +78,12 @@ public class IndpendentWindowAnimator {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        windowManager.removeViewImmediate(transientView);
+                        try {
+                            windowManager.removeViewImmediate(transientView);
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 },100);
               // windowManager.removeView(transientView);
@@ -85,11 +91,18 @@ public class IndpendentWindowAnimator {
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                if(mAnimationListner!=null){
+
+                try {
+                    if(mAnimationListner!=null){
+
+                    mAnimationListner.onCacneled();
+                    }
                     windowManager.removeView(transientView);
                     mAnimationListner.onCacneled();
                 }
-                windowManager.removeView(transientView);
+                catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
 
@@ -123,7 +136,7 @@ public class IndpendentWindowAnimator {
                 widthDifference = toView.getLayoutParams().width - startWidth,
                 heightDifference = toView.getLayoutParams().height - startHeight;
 
-        ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
+        final ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
             int step = 0;
 
             @Override
@@ -154,8 +167,14 @@ public class IndpendentWindowAnimator {
                     transientParams.height = startHeight + addedHeight;
                     transientParams.width = startWidth + addedWidth;
                 }
+                try {
+                    windowManager.updateViewLayout(transientView, transientParams);
 
-                windowManager.updateViewLayout(transientView, transientParams);
+                }catch (Exception e){
+
+                    e.printStackTrace();
+                    valueAnimator.cancel();
+                }
 
             }
 

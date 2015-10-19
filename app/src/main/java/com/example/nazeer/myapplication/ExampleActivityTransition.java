@@ -96,7 +96,7 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
             }
         });
         // very small animation time may cause the animation to end before the target activities sends its target view and it will remain hidden
-        indpendentWindowAnimator.starViewAnimation(fromView, targetView, animationIv,400);
+        indpendentWindowAnimator.starViewAnimation(fromView, targetView, animationIv,5000);
         Intent intent =new Intent(this, ExampleTransitionActivity2.class);
         intent.putExtra("selectedImage", imageResource);
         startActivity(intent);
