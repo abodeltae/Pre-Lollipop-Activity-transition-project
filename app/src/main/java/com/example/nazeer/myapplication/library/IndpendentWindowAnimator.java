@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,13 @@ public class IndpendentWindowAnimator {
                 if(mAnimationListner!=null){
                     mAnimationListner.onEnd();
                 }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        windowManager.removeViewImmediate(transientView);
+                    }
+                },100);
+              // windowManager.removeView(transientView);
             }
 
             @Override
@@ -74,6 +82,8 @@ public class IndpendentWindowAnimator {
                     windowManager.removeView(transientView);
                     mAnimationListner.onCacneled();
                 }
+                windowManager.removeView(transientView);
+
             }
 
             @Override
@@ -123,14 +133,14 @@ public class IndpendentWindowAnimator {
                 // and size of view at the same time , so I change one property every time
                 // (mostly it will go unnoticed unless a realy slow animation )
                 // There's an open issue with this problem on this link https://code.google.com/p/android/issues/detail?id=74099
-                if (step++ % 2 == 0) {
+                if (step++ % 2 == 0||(widthDifference==0&&heightDifference==0/*if size is the same update every time for smotthness*/)) {
                     //modify position
                     int addedX = (int) (fraction * xDifference);
                     int addedY = (int) (fraction * yDifference);
                     transientParams.x = startX + addedX;
                     transientParams.y = startY + addedY;
                 }
-                if (step % 2 == 0) {
+                if (step % 2 == 0&&(widthDifference!=0||heightDifference!=0)) {
                     //modifiy width and height
                     int addedWidth = (int) (fraction * widthDifference);
                     int addedHeight = (int) (fraction * heightDifference);
@@ -139,9 +149,7 @@ public class IndpendentWindowAnimator {
                 }
 
                 windowManager.updateViewLayout(transientView, transientParams);
-                if (fraction == 1) {
-                    windowManager.removeView(transientView);
-                }
+
             }
 
         };

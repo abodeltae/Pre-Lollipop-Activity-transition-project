@@ -17,11 +17,6 @@ ImageView imageView;
         if(imageResource!=-1){
             imageView.setImageResource(imageResource);
         }
-        App.runnables.put(R.id.imageViewTarget,new Runnable() {
-            @Override
-            public void run() {
-                imageView.setVisibility(View.VISIBLE);
-            }
-        });
+        App.targetViews.put(R.id.imageViewTarget,imageView);
     }
 }

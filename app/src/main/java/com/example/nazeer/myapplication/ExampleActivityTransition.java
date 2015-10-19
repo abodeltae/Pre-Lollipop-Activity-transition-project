@@ -2,7 +2,6 @@ package com.example.nazeer.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -59,13 +58,16 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
         }
     }
 
-    private void startAnimation(final View v, int imageResource) {
-        View targetView=targetLayout.findViewById(R.id.imageViewTarget);
+    private void startAnimation(final View fromView, int imageResource) {
+
+        final View targetView=targetLayout.findViewById(R.id.imageViewTarget);
         IndpendentWindowAnimator indpendentWindowAnimator=new IndpendentWindowAnimator(this);
+        final ImageView animationIv=new ImageView(getApplicationContext());
+        animationIv.setImageResource(imageResource);
         indpendentWindowAnimator.setAnimatoionListner(new AnimationListner() {
             @Override
             public void onStart() {
-                v.setVisibility(View.INVISIBLE);
+                fromView.setVisibility(View.INVISIBLE);
 
             }
 
@@ -77,9 +79,14 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
             @Override
             public void onEnd() {
                 Log.w("mAnimationsListner", "onEnd");
-                v.setVisibility(View.VISIBLE);
-                Handler h = new Handler();
-                h.post(App.runnables.get(R.id.imageViewTarget));
+                fromView.setVisibility(View.VISIBLE);
+                //get The view set by The target Activity
+                View view=App.targetViews.get(R.id.imageViewTarget);
+                if(view!=null){
+                    view.setVisibility(View.VISIBLE);
+                }
+
+
 
             }
 
@@ -88,11 +95,10 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
 
             }
         });
-        ImageView animationIv=new ImageView(getApplicationContext());
-        animationIv.setImageResource(imageResource);
-        indpendentWindowAnimator.starViewAnimation(v, targetView, animationIv,400);
+
+        indpendentWindowAnimator.starViewAnimation(fromView, targetView, animationIv,400);
         Intent intent =new Intent(this, ExampleTransitionActivity2.class);
-        intent.putExtra("selectedImage",imageResource);
+        intent.putExtra("selectedImage", imageResource);
         startActivity(intent);
     }
 }
