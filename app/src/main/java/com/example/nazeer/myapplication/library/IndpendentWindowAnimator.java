@@ -1,34 +1,36 @@
-package com.example.nazeer.myapplication;
+package com.example.nazeer.myapplication.library;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 /**
  * Created by nazeer on 10/17/15.
  */
 /*
-startImageViewAnimation( ) method create a view on top of the screen that will animate the position and size
+starViewAnimation( ) method create a view on top of the screen that will animate the position and size
  from the given from a given "start Image view"  to a given "target Image view "
   the animation doesnt depend on the activity nor the fragment so it can be started while changing activities or fragments to give the
   lollipop transition feeling
   */
 public class IndpendentWindowAnimator {
-    Activity context;
+    Activity activity;
     WindowManager windowManager;
     int statusBarHeight;
+    private AnimationListner mAnimationListner=null;
+    ValueAnimator valueAnimator;
+    View transientView;
 
     public IndpendentWindowAnimator(Activity activity) {
-        this.context = activity;
+        this.activity = activity;
         windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
         Rect statusBarrectangle = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(statusBarrectangle);
@@ -37,45 +39,87 @@ public class IndpendentWindowAnimator {
     }
 
 
-    public void startImageViewAnimation(ImageView fromIv, ImageView toIv, ImageView transientIv, int duration) {
-        matchLayoutParams(fromIv, transientIv);
-        windowManager.addView(transientIv, transientIv.getLayoutParams());
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
+    public void starViewAnimation(View fromView, View toView, View transV, int duration) {
+        this.transientView=transV;
+        matchLayoutParams(fromView, transientView);
+        windowManager.addView(transientView, transientView.getLayoutParams());
+        valueAnimator = ValueAnimator.ofInt(0, 100);
         valueAnimator.setDuration(duration);
-        valueAnimator.addUpdateListener(getValueAnimatorListner(fromIv, toIv, transientIv));
+        valueAnimator.addUpdateListener(getValueAnimatorUpdateListner(fromView, toView));
+        valueAnimator.addListener(getListner());
         valueAnimator.start();
 
 
     }
 
+    private Animator.AnimatorListener getListner() {
+        Animator.AnimatorListener listener=new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if(mAnimationListner!=null){
+                    mAnimationListner.onStart();
+                }
+            }
 
-    public void startImageViewAnimation(ImageView fromIv, ImageView toIv, ImageView transientIv) {
-        startImageViewAnimation(fromIv, toIv, transientIv, 600);
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(mAnimationListner!=null){
+                    mAnimationListner.onEnd();
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                if(mAnimationListner!=null){
+                    valueAnimator.cancel();
+                    windowManager.removeView(transientView);
+                    mAnimationListner.onCacneled();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        };
+                return listener;
+    }
+
+
+
+    public void starViewAnimation(View fromIv, View toIv, View transientIv) {
+        starViewAnimation(fromIv, toIv, transientIv, 600);
 
 
     }
 
-    private ValueAnimator.AnimatorUpdateListener getValueAnimatorListner(final View fromIv,
-                                                                         final View toIv,
-                                                                         final View transientIv) {
+    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(final View fromView,
+                                                                         final View toView) {
         final int targetlocation[] = new int[2];
-        toIv.getLocationOnScreen(targetlocation);
-        final WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientIv.getLayoutParams();
+        toView.getLocationOnScreen(targetlocation);
+        final WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
         final int startX = transientParams.x,
                 startY = transientParams.y,
                 xDifference = targetlocation[0] - startX,
-                yDifference = targetlocation[1] - getStatusBarHeight(context) - startY,
+                yDifference = targetlocation[1] - getStatusBarHeight(activity) - startY,
                 startWidth = transientParams.width,
                 startHeight = transientParams.height,
-                widthDifference = toIv.getLayoutParams().width - startWidth,
-                heightDifference = toIv.getLayoutParams().height - startHeight;
+                widthDifference = toView.getLayoutParams().width - startWidth,
+                heightDifference = toView.getLayoutParams().height - startHeight;
 
         ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
             int step = 0;
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                double fraction = (Integer) animation.getAnimatedValue() / 100.0;
+
+
+
+                double fraction = (Integer) animation.getAnimatedValue() /100.0;
+
+                if(mAnimationListner!=null){
+                    mAnimationListner.onupdate(fraction);
+                }
                 //The step thingy to skip a problem with the window manager not behaving properly when changing the position
                 // and size of view at the same time , so I change one property every time
                 // (mostly it will go unnoticed unless a realy slow animation )
@@ -95,15 +139,17 @@ public class IndpendentWindowAnimator {
                     transientParams.width = startWidth + addedWidth;
                 }
 
-                windowManager.updateViewLayout(transientIv, transientParams);
-                if (fraction == 1) windowManager.removeView(transientIv);
+                windowManager.updateViewLayout(transientView, transientParams);
+                if (fraction == 1) {
+                    windowManager.removeView(transientView);
+                }
             }
 
         };
         return listener;
     }
 
-    private void matchLayoutParams(ImageView fromIv, ImageView transientIv) {
+    private void matchLayoutParams(View fromIv, View transientIv) {
         int location[] = new int[2];
         fromIv.getLocationInWindow(location);
         ViewGroup.LayoutParams fromParams = fromIv.getLayoutParams();
@@ -114,7 +160,7 @@ public class IndpendentWindowAnimator {
                 PixelFormat.TRANSLUCENT);
         transientParams.gravity = Gravity.TOP | Gravity.LEFT;
         transientParams.x = location[0];
-        transientParams.y = location[1] - getStatusBarHeight(context);
+        transientParams.y = location[1] - getStatusBarHeight(activity);
         transientIv.setLayoutParams(transientParams);
 
 
@@ -127,5 +173,18 @@ public class IndpendentWindowAnimator {
             return resources.getDimensionPixelSize(resourceId);
         else
             return (int) Math.ceil(25 * resources.getDisplayMetrics().density);
+    }
+
+    public void setAnimatoionListner(AnimationListner listner){
+        this.mAnimationListner=listner;
+    }
+    public AnimationListner getAnimationListner(){
+        return mAnimationListner;
+    }
+    public void removeAnimationListners(){
+        mAnimationListner=null;
+    }
+    public void cancelAnimation(){
+        valueAnimator.cancel();
     }
 }

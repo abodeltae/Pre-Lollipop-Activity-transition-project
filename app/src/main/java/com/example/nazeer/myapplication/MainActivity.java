@@ -1,18 +1,14 @@
 package com.example.nazeer.myapplication;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-
+import com.example.nazeer.myapplication.library.AnimationListner;
+import com.example.nazeer.myapplication.library.IndpendentWindowAnimator;
 
 
 public class MainActivity extends Activity {
@@ -24,6 +20,27 @@ public class MainActivity extends Activity {
         topLeft=(ImageView)findViewById(R.id.imageViewtopleft);
         bottomRight=(ImageView)findViewById(R.id.imageViewbottmRight);
         final IndpendentWindowAnimator indpendentWindowAnimator=new IndpendentWindowAnimator(this);
+        indpendentWindowAnimator.setAnimatoionListner(new AnimationListner() {
+            @Override
+            public void onStart() {
+                Log.w("mAnimationsListner","onstart");
+            }
+
+            @Override
+            public void onupdate(double animationfraction) {
+                Log.w("mAnimationsListner","onUpdate"+animationfraction);
+            }
+
+            @Override
+            public void onEnd() {
+                Log.w("mAnimationsListner","onEnd");
+            }
+
+            @Override
+            public void onCacneled() {
+
+            }
+        });
 
         Button startButton= (Button) findViewById(R.id.buttonStartAnimation);
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +48,8 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 final ImageView transientIv=new ImageView(MainActivity.this);
                 transientIv.setImageResource(android.R.color.black);
-                indpendentWindowAnimator.startImageViewAnimation(topLeft,bottomRight,transientIv,5000);
+                indpendentWindowAnimator.starViewAnimation(topLeft, bottomRight, transientIv, 600);
+
             }
         });
 
