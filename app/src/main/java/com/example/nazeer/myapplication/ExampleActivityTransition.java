@@ -73,7 +73,7 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
 
             @Override
             public void onupdate(double animationfraction) {
-                Log.w("mAnimationsListner", "onUpdate" + animationfraction);
+
             }
 
             @Override
