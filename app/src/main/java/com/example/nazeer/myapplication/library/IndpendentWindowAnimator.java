@@ -21,6 +21,10 @@ starViewAnimation( ) method create a view on top of the screen that will animate
  from the given from a given "start Image view"  to a given "target Image view "
   the animation doesnt depend on the activity nor the fragment so it can be started while changing activities or fragments to give the
   lollipop transition feeling
+
+  **** its the user  responsibilty to provide a dummy target view to help determine the view location on the screen
+  **** this can be done by viewing the target activity as invisible and sending the views from it see ExampleActivityTransition (Not the most effiecient but it works )
+  **** Call backs are provided to the user to let him determine when to hide and show the views to give the illusion of the moving View
   */
 public class IndpendentWindowAnimator {
     Activity activity;
