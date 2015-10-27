@@ -10,6 +10,7 @@ ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_example_transition2);
         imageView= (ImageView) findViewById(R.id.imageViewTarget);
         int imageResource=getIntent().getIntExtra("selectedImage",-1);
