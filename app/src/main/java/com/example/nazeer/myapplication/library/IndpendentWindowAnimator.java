@@ -16,6 +16,7 @@ import android.view.WindowManager;
 /**
  * Created by nazeer on 10/17/15.
  */
+
 /*
 starViewAnimation( ) method create a view on top of the screen that will animate the position and size
  from the given from a given "start view"  to a given "target  view "
@@ -30,6 +31,7 @@ starViewAnimation( ) method create a view on top of the screen that will animate
   **** Call backs are provided to the user to let him determine when to hide and show the views to give the illusion of the moving View
   ****  Becarfule with slow Animation The will continue even if you changed activities
   */
+
 public class IndpendentWindowAnimator {
     Activity activity;
     WindowManager windowManager;
@@ -121,21 +123,16 @@ public class IndpendentWindowAnimator {
 
 
     }
-
-    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(final View fromView,
-                                                                         final View toView) {
-        final int targetlocation[] = new int[2];
-        toView.getLocationOnScreen(targetlocation);
+    private  ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(int []startLocation,int []targetLocation,
+                                                                                final int startWidth, final int startHeight,
+                                                                                int targetWidth,int targetHeight){
         final WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
-        final int startX = transientParams.x,
-                startY = transientParams.y,
-                xDifference = targetlocation[0] - startX,
-                yDifference = targetlocation[1] - getStatusBarHeight(activity) - startY,
-                startWidth = transientParams.width,
-                startHeight = transientParams.height,
-                widthDifference = toView.getLayoutParams().width - startWidth,
-                heightDifference = toView.getLayoutParams().height - startHeight;
-
+        final int startX = startLocation[0],
+                startY = startLocation[1],
+                xDifference = targetLocation[0] - startX,
+                yDifference = targetLocation[1] - getStatusBarHeight(activity) - startY,
+                widthDifference = targetWidth - startWidth,
+                heightDifference = targetHeight - startHeight;
         final ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
             int step = 0;
 
@@ -179,7 +176,25 @@ public class IndpendentWindowAnimator {
             }
 
         };
-        return listener;
+            return listener;
+
+    }
+
+    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(final View fromView,
+                                                                               final View toView) {
+        int startLocation[]=new int[2];
+         int targetlocation[] = new int[2];
+        toView.getLocationOnScreen(targetlocation);
+        fromView.getLocationOnScreen(startLocation);
+         WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
+         int startX = transientParams.x,
+                startY = transientParams.y,
+                startWidth = transientParams.width,
+                startHeight = transientParams.height,
+                targetWidth = toView.getLayoutParams().width ,
+                targetHeight = toView.getLayoutParams().height ;
+
+        return getValueAnimatorUpdateListner(startLocation,targetlocation,startWidth,startHeight,targetWidth,targetHeight);
     }
 
     private void matchLayoutParams(View fromIv, View transientIv) {
