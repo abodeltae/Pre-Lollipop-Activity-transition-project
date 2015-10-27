@@ -12,11 +12,11 @@ ImageView imageView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example_transition2);
         imageView= (ImageView) findViewById(R.id.imageViewTarget);
-        imageView.setVisibility(View.INVISIBLE);
         int imageResource=getIntent().getIntExtra("selectedImage",-1);
         if(imageResource!=-1){
             imageView.setImageResource(imageResource);
         }
-        App.targetViews.put(R.id.imageViewTarget,imageView);
+        //imageView.setVisibility(View.INVISIBLE);
+
     }
 }

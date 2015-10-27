@@ -26,10 +26,8 @@ starViewAnimation( ) method create a view on top of the screen that will animate
   *** the user should provide an animationView That will be used during the animation
   *   He can then set a photo to it , add text etc ...
 
-  **** its the user  responsibilty to provide a dummy target view to help determine the view location on the screen
-  **** this can be done by viewing the target activity as invisible and sending the views from it see ExampleActivityTransition (Not the most effiecient but it works )
   **** Call backs are provided to the user to let him determine when to hide and show the views to give the illusion of the moving View
-  ****  Becarfule with slow Animation The will continue even if you changed activities
+  ****  Becarfule with very slow Animation The will continue even if you changed activities
   */
 
 public class IndpendentWindowAnimator {

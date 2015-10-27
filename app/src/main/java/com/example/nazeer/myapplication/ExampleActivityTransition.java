@@ -3,18 +3,13 @@ package com.example.nazeer.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-import com.example.nazeer.myapplication.library.AnimationListner;
-import com.example.nazeer.myapplication.library.IndpendentWindowAnimator;
 
 public class ExampleActivityTransition extends AppCompatActivity implements View.OnClickListener{
 
     ImageView redIv,blueIv,greenIv;
-    RelativeLayout containerLayout,targetLayout;
+    public static View selectedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,75 +23,28 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
         greenIv.setOnClickListener(this);
         blueIv.setOnClickListener(this);
 
-        //this layout will be used to contain a dummy hidden view to get the target views needed to be passed to the animator
-        containerLayout= (RelativeLayout) findViewById(R.id.containerLayout);
-        //the layout of the target activity so I can get the target view from it
-         targetLayout= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_example_transition2, null);
-        //keep it hidden as its not needed fir the user
-        // *** DONT SET IT TO GONE ***
-        targetLayout.setVisibility(View.INVISIBLE);
-
-        containerLayout.addView(targetLayout);
-
     }
 
     @Override
     public void onClick(View v) {
 
-
+            selectedView=v;
         int id=v.getId();
         switch (id){
             case R.id.imageViewRedCircle:
-                startAnimation(v,R.drawable.red_circle);
+                startActivity(v, R.drawable.red_circle);
                 break;
             case R.id.imageViewGreenCircle:
-                startAnimation(v,R.drawable.green_circle);
+                startActivity(v, R.drawable.green_circle);
                 break;
             case R.id.imageViewBlueCircle:
-                startAnimation(v,R.drawable.blue_circle);
+                startActivity(v, R.drawable.blue_circle);
                 break;
         }
     }
 
-    private void startAnimation(final View fromView, int imageResource) {
+    private void startActivity(final View fromView, int imageResource) {
 
-        final View targetView=targetLayout.findViewById(R.id.imageViewTarget);
-        IndpendentWindowAnimator indpendentWindowAnimator=new IndpendentWindowAnimator(this);
-        final ImageView animationIv=new ImageView(getApplicationContext());
-        animationIv.setImageResource(imageResource);
-        indpendentWindowAnimator.setAnimatoionListner(new AnimationListner() {
-            @Override
-            public void onStart() {
-                fromView.setVisibility(View.INVISIBLE);
-
-            }
-
-            @Override
-            public void onupdate(double animationfraction) {
-
-            }
-
-            @Override
-            public void onEnd() {
-                Log.w("mAnimationsListner", "onEnd");
-                fromView.setVisibility(View.VISIBLE);
-                //get The view set by The target Activity
-                View view=App.targetViews.get(R.id.imageViewTarget);
-                if(view!=null){
-                    view.setVisibility(View.VISIBLE);
-                }
-
-
-
-            }
-
-            @Override
-            public void onCacneled() {
-
-            }
-        });
-        // very small animation time may cause the animation to end before the target activities sends its target view and it will remain hidden
-        indpendentWindowAnimator.starViewAnimation(fromView, targetView, animationIv,5000);
         Intent intent =new Intent(this, ExampleTransitionActivity2.class);
         intent.putExtra("selectedImage", imageResource);
         startActivity(intent);
