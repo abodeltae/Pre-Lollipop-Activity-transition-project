@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
         });
 
         startActivity(new Intent(this,ExampleActivityTransition.class));
-        finish();
+        //finish();
 
     }
 

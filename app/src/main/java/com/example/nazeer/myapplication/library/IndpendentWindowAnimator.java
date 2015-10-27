@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,9 +147,9 @@ public class IndpendentWindowAnimator {
             int []targetLocation, int targetWidth,int targetHeight){
         final WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
         final int startX = startLocation[0],
-                startY = startLocation[1],
+                startY = startLocation[1]-getStatusBarHeight(activity),
                 xDifference = targetLocation[0] - startX,
-                yDifference = targetLocation[1] - getStatusBarHeight(activity) - startY,
+                yDifference = targetLocation[1] -getStatusBarHeight(activity) - startY,
                 widthDifference = targetWidth - startWidth,
                 heightDifference = targetHeight - startHeight;
         final ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
@@ -156,9 +157,6 @@ public class IndpendentWindowAnimator {
 
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-
-
-
                 double fraction = (Integer) animation.getAnimatedValue() /100.0;
 
                 if(mAnimationListner!=null){
@@ -206,24 +204,27 @@ public class IndpendentWindowAnimator {
 
         WindowManager.LayoutParams transientParams = new WindowManager.LayoutParams(startWidth,
                 startHeight,
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.TYPE_APPLICATION,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
         transientParams.gravity = Gravity.TOP | Gravity.LEFT;
         transientParams.x = startLocation[0];
+        int y=startLocation[1]-getStatusBarHeight(activity);
         transientParams.y = startLocation[1] - getStatusBarHeight(activity);
         transientIv.setLayoutParams(transientParams);
 
 
     }
 
-    private static int getStatusBarHeight(final Context context) {
-        final Resources resources = context.getResources();
-        final int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+    private  int getStatusBarHeight( Context context) {
+        int ret=0;
+         Resources resources = context.getResources();
+         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0)
-            return resources.getDimensionPixelSize(resourceId);
+            ret= resources.getDimensionPixelSize(resourceId);
         else
-            return (int) Math.ceil(25 * resources.getDisplayMetrics().density);
+            ret= (int) Math.ceil(25 * resources.getDisplayMetrics().density);
+        return ret;
     }
 
     public void setAnimatoionListner(AnimationListner listner){

@@ -47,6 +47,24 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
 
         Intent intent =new Intent(this, ExampleTransitionActivity2.class);
         intent.putExtra("selectedImage", imageResource);
+        int []startlocation=new int [2];
+        int startWidth=selectedView.getLayoutParams().width;
+        int startHeight=selectedView.getLayoutParams().height;
+        selectedView.getLocationOnScreen(startlocation);
+        intent.putExtra("startLocation",startlocation);
+        intent.putExtra("startWidth",startWidth);
+        intent.putExtra("startHeight",startHeight);
         startActivity(intent);
+        overridePendingTransition(0,0);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(selectedView!=null){
+            selectedView.setVisibility(View.VISIBLE);
+        }
     }
 }
