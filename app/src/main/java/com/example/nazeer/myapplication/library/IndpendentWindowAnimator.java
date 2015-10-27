@@ -63,6 +63,7 @@ public class IndpendentWindowAnimator {
 
     }
 
+
     private Animator.AnimatorListener getListner() {
         Animator.AnimatorListener listener=new Animator.AnimatorListener() {
             @Override
@@ -180,21 +181,28 @@ public class IndpendentWindowAnimator {
 
     }
 
-    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(final View fromView,
-                                                                               final View toView) {
+    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner( View startView,
+                                                                                View targetView) {
         int startLocation[]=new int[2];
-         int targetlocation[] = new int[2];
-        toView.getLocationOnScreen(targetlocation);
-        fromView.getLocationOnScreen(startLocation);
+        int targetlocation[] = new int[2];
+        targetView.getLocationOnScreen(targetlocation);
+        startView.getLocationOnScreen(startLocation);
          WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
-         int startX = transientParams.x,
-                startY = transientParams.y,
-                startWidth = transientParams.width,
+         int startWidth = transientParams.width,
                 startHeight = transientParams.height,
-                targetWidth = toView.getLayoutParams().width ,
-                targetHeight = toView.getLayoutParams().height ;
+                targetWidth = targetView.getLayoutParams().width ,
+                targetHeight = targetView.getLayoutParams().height ;
 
         return getValueAnimatorUpdateListner(startLocation,targetlocation,startWidth,startHeight,targetWidth,targetHeight);
+    }
+    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(int []startLocation,int startWidth,int startHeight ,View targetView){
+        int targetlocation[] = new int[2];
+        targetView.getLocationOnScreen(targetlocation);
+        int targetWidth = targetView.getLayoutParams().width ,
+                targetHeight = targetView.getLayoutParams().height ;
+
+        return getValueAnimatorUpdateListner(startLocation,targetlocation,startWidth,startHeight,targetWidth,targetHeight);
+
     }
 
     private void matchLayoutParams(View fromIv, View transientIv) {
