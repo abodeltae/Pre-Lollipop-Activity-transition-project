@@ -48,18 +48,41 @@ public class IndpendentWindowAnimator {
         statusBarHeight = statusBarrectangle.top;
 
     }
+    public void starViewAnimation(View startView, View targetView, View transientIv) {
+        starViewAnimation(startView, targetView, transientIv, 600);
+    }
+
+    public void starViewAnimation(View startView, View targetView, View transV, int duration) {
+       int []startLocation=new int [2];
+        int []targetLocation=new int [2];
+        startView.getLocationOnScreen(startLocation);
+        targetView.getLocationOnScreen(targetLocation);
+        int startWidth=startView.getLayoutParams().width,
+                startHeight=startView.getLayoutParams().height,
+                targetWidth=targetView.getLayoutParams().width,
+                targetHeight=targetView.getLayoutParams().height;
+        starViewAnimation(startLocation,startWidth,startHeight,targetLocation,targetWidth,targetHeight,transV,duration);
 
 
-    public void starViewAnimation(View fromView, View toView, View transV, int duration) {
+    }
+    public void starViewAnimation(int [] startLocation, int startWidth,int startHeight ,View targetView, View transV, int duration) {
+        int []targetLocation=new int [2];
+        int targetWidth=targetView.getLayoutParams().width,
+                targetHeight = targetView.getLayoutParams().height;
+        targetView.getLocationOnScreen(targetLocation);
+        starViewAnimation(startLocation, startWidth, startHeight, targetLocation, targetWidth, targetHeight, transV, duration);
+
+    }
+    public void starViewAnimation(int [] startLocation, int startWidth,int startHeight ,
+                                    int []targetLocation, int targetWidth,int targetHeight, View transV, int duration) {
         this.transientView=transV;
-        matchLayoutParams(fromView, transientView);
+        matchLayoutParams(startLocation,startWidth,startHeight, transientView);
         windowManager.addView(transientView, transientView.getLayoutParams());
         valueAnimator = ValueAnimator.ofInt(0, 100);
         valueAnimator.setDuration(duration);
-        valueAnimator.addUpdateListener(getValueAnimatorUpdateListner(fromView, toView));
+        valueAnimator.addUpdateListener(getValueAnimatorUpdateListner(startLocation,startWidth,startHeight,targetLocation,targetWidth,targetHeight));
         valueAnimator.addListener(getListner());
         valueAnimator.start();
-
 
     }
 
@@ -119,14 +142,10 @@ public class IndpendentWindowAnimator {
 
 
 
-    public void starViewAnimation(View fromIv, View toIv, View transientIv) {
-        starViewAnimation(fromIv, toIv, transientIv, 600);
 
-
-    }
-    private  ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(int []startLocation,int []targetLocation,
-                                                                                final int startWidth, final int startHeight,
-                                                                                int targetWidth,int targetHeight){
+    private  ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(
+            int []startLocation, final int startWidth, final int startHeight,
+            int []targetLocation, int targetWidth,int targetHeight){
         final WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
         final int startX = startLocation[0],
                 startY = startLocation[1],
@@ -181,42 +200,20 @@ public class IndpendentWindowAnimator {
 
     }
 
-    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner( View startView,
-                                                                                View targetView) {
-        int startLocation[]=new int[2];
-        int targetlocation[] = new int[2];
-        targetView.getLocationOnScreen(targetlocation);
-        startView.getLocationOnScreen(startLocation);
-         WindowManager.LayoutParams transientParams = (WindowManager.LayoutParams) transientView.getLayoutParams();
-         int startWidth = transientParams.width,
-                startHeight = transientParams.height,
-                targetWidth = targetView.getLayoutParams().width ,
-                targetHeight = targetView.getLayoutParams().height ;
 
-        return getValueAnimatorUpdateListner(startLocation,targetlocation,startWidth,startHeight,targetWidth,targetHeight);
-    }
-    private ValueAnimator.AnimatorUpdateListener getValueAnimatorUpdateListner(int []startLocation,int startWidth,int startHeight ,View targetView){
-        int targetlocation[] = new int[2];
-        targetView.getLocationOnScreen(targetlocation);
-        int targetWidth = targetView.getLayoutParams().width ,
-                targetHeight = targetView.getLayoutParams().height ;
 
-        return getValueAnimatorUpdateListner(startLocation,targetlocation,startWidth,startHeight,targetWidth,targetHeight);
 
-    }
+    private void matchLayoutParams(int [] startLocation,int startWidth,int startHeight, View transientIv) {
 
-    private void matchLayoutParams(View fromIv, View transientIv) {
-        int location[] = new int[2];
-        fromIv.getLocationInWindow(location);
-        ViewGroup.LayoutParams fromParams = fromIv.getLayoutParams();
-        WindowManager.LayoutParams transientParams = new WindowManager.LayoutParams(fromParams.width,
-                fromParams.height,
+
+        WindowManager.LayoutParams transientParams = new WindowManager.LayoutParams(startWidth,
+                startHeight,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
         transientParams.gravity = Gravity.TOP | Gravity.LEFT;
-        transientParams.x = location[0];
-        transientParams.y = location[1] - getStatusBarHeight(activity);
+        transientParams.x = startLocation[0];
+        transientParams.y = startLocation[1] - getStatusBarHeight(activity);
         transientIv.setLayoutParams(transientParams);
 
 
