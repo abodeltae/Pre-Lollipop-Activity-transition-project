@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="50dp">
+    tools:context="com.example.nazeer.myapplication.MainActivity">
 
-   <ImageView
-       android:layout_width="50dp"
-       android:layout_height="50dp"
-       android:src="@color/colorAccent"
-       android:id="@+id/imageViewtopleft"
-      />
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:src="@color/colorAccent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:id="@+id/imageViewbottmRight"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="animate"
-        android:id="@+id/buttonStartAnimation"/>
+        android:text="between Views \nAnimation"
+        android:id="@+id/buttonSimpleAnimation"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onClick"
+        android:background="#123456"
+        android:textColor="#ffffff"
+        android:padding="10dp"
+        />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Activity Transition \n animation"
+        android:id="@+id/buttonActivityTransition"
+        android:layout_below="@+id/buttonSimpleAnimation"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onClick"
+        android:background="#123456"
+        android:textColor="#ffffff"
+        android:padding="10dp"/>
 </RelativeLayout>

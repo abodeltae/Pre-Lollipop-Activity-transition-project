@@ -19,12 +19,8 @@ import android.view.WindowManager;
  */
 
 /*
-starViewAnimation( ) method create a view on top of the screen that will animate the position and size
- from the given from a given "start view"  to a given "target  view "
-  the animation doesnt depend on the activity nor the fragment so it can be started while changing activities or fragments to give the
-  lollipop transition feeling
 
-  *** the user should provide an animationView That will be used during the animation
+  *** the user should provide an View That will be used during the animation
   *   He can then set a photo to it , add text etc ...
 
   **** Call backs are provided to the user to let him determine when to hide and show the views to give the illusion of the moving View
