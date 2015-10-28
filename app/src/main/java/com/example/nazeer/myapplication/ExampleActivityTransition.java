@@ -38,7 +38,7 @@ public class ExampleActivityTransition extends AppCompatActivity implements View
                 startActivity(v, R.drawable.green_circle);
                 break;
             case R.id.imageViewBlueCircle:
-                startActivity(v, R.drawable.blue_circle);
+                startActivity(v, R.drawable.blue_rectangle);
                 break;
         }
     }

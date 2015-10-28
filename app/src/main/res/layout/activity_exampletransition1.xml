@@ -16,20 +16,26 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/blue_circle"
-        android:id="@+id/imageViewBlueCircle"
+        android:src="@drawable/green_circle"
+        android:id="@+id/imageViewGreenCircle"
+        android:layout_margin="10dp"
         />
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/green_circle"
-        android:id="@+id/imageViewGreenCircle"
+        android:src="@drawable/blue_rectangle"
+        android:id="@+id/imageViewBlueCircle"
+        android:layout_margin="10dp"
+
         />
+
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/red_circle"
         android:id="@+id/imageViewRedCircle"
+        android:layout_margin="10dp"
+
         />
 
 </LinearLayout>
