@@ -1,4 +1,4 @@
-# Animation Manager and A pre lollipop Transition Example # 
+# Animation Manager and A pre lollipop Transition Example 
 "IndpendentWindowAnimator" can Start An Animation between two views , Also can Animate between two given locations.
 
 It uses a view that you provide and animate it between the positions of the two given views or locations, And will animate the size of the view from the start view to target view will moving . 
@@ -128,4 +128,4 @@ Then You Can Use The Animator Library to display an animation and use the Call B
         animator.starViewAnimation(startLocation, startWidth, startHeight, imageView, animationView, 600);
 ```
 # Contributions and pull requests are welcomed  #
-This is still very young and if you have any comments or anything I'd be happy to hear them 
+This is still very young and if you have any comments or anything I'd be happy to hear them
