@@ -1,4 +1,4 @@
-# Animation Manager and A pre lollipop Transition Example 
+# Animation Manager and A pre lollipop Transition Animation Example 
 "IndpendentWindowAnimator" can Start An Animation between two views , Also can Animate between two given locations.
 
 It uses a view that you provide and animate it between the positions of the two given views or locations, And will animate the size of the view from the start view to target view will moving . 
