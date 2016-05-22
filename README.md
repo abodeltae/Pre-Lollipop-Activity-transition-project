@@ -6,8 +6,7 @@ It uses a view that you provide and animate it between the positions of the two 
 
 
 
-```
-#!java
+```java
 
                 ImageView transientIv = new ImageView(simpleAnimationActivity.this);
                 transientIv.setImageResource(android.R.color.black);
@@ -16,16 +15,14 @@ It uses a view that you provide and animate it between the positions of the two 
 
 Also You can Use location and width of size of the start and target view 
 
-```
-#!java
+```java
 
 starViewAnimation(int [] startLocation, int startWidth,int startHeight ,
                   int []targetLocation, int targetWidth,int targetHeight, View transV, int duration) 
 ```
 You can set An Animation Listner to track updates through the animation 
 
-```
-#!java
+```java
 
         IndpendentWindowAnimator animator = new IndpendentWindowAnimator(this);
         animator.setAnimatoionListner(new AnimationListner() {
@@ -59,8 +56,7 @@ This is inspired by the devByte from this link
 The idea is to disable custom Activity transition 
 with 
 
-```
-#!java
+```java
         startActivity(intent);
         overridePendingTransition(0,0);
 
@@ -73,8 +69,7 @@ by Setting A Style to it with a transparent windowbackground property like this
 
 ** make sure you use the same parent you are using for you app theme ** 
 
-```
-#!xml
+```xml
 
     <style name="Transparent" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
@@ -83,8 +78,7 @@ by Setting A Style to it with a transparent windowbackground property like this
 ```
   And set The style to the activity 
 
-```
-#!xml
+```xml
 
         <activity
             android:name=".ExampleTransitionActivity2"
@@ -93,8 +87,7 @@ by Setting A Style to it with a transparent windowbackground property like this
 ```
 Then You Can Use The Animator Library to display an animation and use the Call Backs to hide the Views On Start Of animation and then show it at the end to give The illusion that the view its self is moving . 
 
-```
-#!java
+```java
 
         IndpendentWindowAnimator animator = new IndpendentWindowAnimator(this);
         //the view to be used in the animation 
